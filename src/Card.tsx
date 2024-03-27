@@ -1,4 +1,4 @@
-import { useState, Dispatch, useEffect } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
 interface Tips {
   tipAmount: number;
   total: number;
@@ -11,20 +11,20 @@ interface UserInput {
 
 function TipButtons({
   tipPercent,
-  setTip,
+  setTipPercent,
 }: {
-  tipPercent: number;
-  setTip: () => void;
+  tipPercent: number | undefined;
+  setTipPercent: (value: number) => void;
 }) {
   function handleClick(e: React.MouseEvent<HTMLButtonElement>): void {
     const target = e.target as HTMLButtonElement;
     const { value } = target;
-    if (target) setTip((prev) => ({ ...prev, tipPercent: Number(value) }));
+    if (target) setTipPercent(Number(value));
   }
-  function handleChange(e: React.MouseEvent<HTMLInputElement>): void {
+  function handleChange(e: React.FormEvent<HTMLInputElement>): void {
     const target = e.target as HTMLInputElement;
     const { value } = target;
-    if (target) setTip((prev) => ({ ...prev, tipPercent: Number(value) }));
+    if (target) setTipPercent(Number(value));
   }
 
   const tipPercentArr = [5, 10, 15, 25, 50];
@@ -54,14 +54,45 @@ function TipButtons({
   );
 }
 
-function Input({ setTip, tip }: { setTip: Dispatch<Tips>; tip: Tips }) {
-  useEffect(() => console.log(tip), [tip]);
+function Input({
+  setTip,
+  tip,
+}: {
+  setTip: Dispatch<SetStateAction<Tips>>;
+  tip: Tips;
+}) {
   const [userInput, setUserInput] = useState<UserInput>({
     billTotal: 0,
-    numberOfPeople: 0,
+    numberOfPeople: 1,
   });
+  useEffect(() => {
+    const { billTotal, numberOfPeople } = userInput;
+    let tipAmount = (billTotal * (tip.tipPercent || 0)) / 100;
+    let total = billTotal + tipAmount;
+    if (numberOfPeople > 0) {
+      tipAmount /= numberOfPeople;
+      total /= numberOfPeople;
+    }
+    setTip({
+      ...tip,
+      tipAmount: Number(tipAmount),
+      total: Number(total),
+    });
+  }, [userInput, tip.tipPercent]);
+
+  function handleChange(
+    e: React.FormEvent<HTMLInputElement>,
+    inputType: string
+  ) {
+    const target = e.target as HTMLInputElement;
+    const { value } = target;
+    if (target) setUserInput({ ...userInput, [inputType]: Number(value) });
+  }
 
   const { tipPercent } = tip;
+  function setTipPercent(value: number) {
+    setTip((prev) => ({ ...prev, tipPercent: Number(value) }));
+  }
   return (
     <div className="input">
       <label htmlFor="billTotal">Bill</label>
@@ -70,14 +101,20 @@ function Input({ setTip, tip }: { setTip: Dispatch<Tips>; tip: Tips }) {
         id="billTotal"
         placeholder="0"
         value={userInput.billTotal}
+        onChange={(e) => handleChange(e, "billTotal")}
       />
-      <label htmlFor="tipPercent"> SelectTip %</label>
+      <label htmlFor="tipPercent"> {"SelectTip %"}</label>
       <div id="tipPercent">
-        <TipButtons tipPercent={tipPercent} setTip={setTip} />
+        <TipButtons tipPercent={tipPercent} setTipPercent={setTipPercent} />
       </div>
       <div>
         <label htmlFor="NumberOfPeople">Number of People</label>
-        <input type="number" placeholder="0" />
+        <input
+          type="number"
+          placeholder="0"
+          value={userInput.numberOfPeople}
+          onChange={(e) => handleChange(e, "numberOfPeople")}
+        />
       </div>
     </div>
   );
