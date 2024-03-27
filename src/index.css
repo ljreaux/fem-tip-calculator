@@ -18,3 +18,10 @@ body {
 #root {
   font-family: "Space Mono", monospace;
 }
+
+main {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background-color: var(--clr-light-grayish-cyan);
+}
