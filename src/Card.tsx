@@ -43,13 +43,14 @@ function TipButtons({
   return (
     <>
       {tipButtons}
-      <label htmlFor="customTip"></label>
-      <input
-        type="number"
-        placeholder="Custom"
-        value={tipPercent}
-        onChange={handleChange}
-      />
+      <label htmlFor="customTip">
+        <input
+          type="number"
+          placeholder="Custom"
+          value={tipPercent}
+          onChange={handleChange}
+        />
+      </label>
     </>
   );
 }
@@ -57,14 +58,14 @@ function TipButtons({
 function Input({
   setTip,
   tip,
+  userInput,
+  setUserInput,
 }: {
   setTip: Dispatch<SetStateAction<Tips>>;
   tip: Tips;
+  userInput: UserInput;
+  setUserInput: Dispatch<SetStateAction<UserInput>>;
 }) {
-  const [userInput, setUserInput] = useState<UserInput>({
-    billTotal: 0,
-    numberOfPeople: 1,
-  });
   useEffect(() => {
     const { billTotal, numberOfPeople } = userInput;
     let tipAmount = (billTotal * (tip.tipPercent || 0)) / 100;
@@ -82,7 +83,7 @@ function Input({
 
   function handleChange(
     e: React.FormEvent<HTMLInputElement>,
-    inputType: string
+    inputType: string,
   ) {
     const target = e.target as HTMLInputElement;
     const { value } = target;
@@ -103,24 +104,68 @@ function Input({
         value={userInput.billTotal}
         onChange={(e) => handleChange(e, "billTotal")}
       />
+
       <label htmlFor="tipPercent"> {"SelectTip %"}</label>
       <div id="tipPercent">
         <TipButtons tipPercent={tipPercent} setTipPercent={setTipPercent} />
       </div>
-      <div>
-        <label htmlFor="NumberOfPeople">Number of People</label>
+      <div
+        style={{
+          width: "100%",
+        }}
+      >
+        <label
+          htmlFor="numberOfPeople"
+          style={{
+            display: "block",
+            width: "100%",
+            position: "relative",
+          }}
+        >
+          <span>Number of People</span>
+          {userInput.numberOfPeople === 0 && (
+            <span
+              style={{
+                fontSize: ".5rem",
+                color: "#DFA496",
+                position: "absolute",
+                right: 0,
+                top: "50%",
+                translate: "0 -50%",
+              }}
+            >
+              Can't be zero
+            </span>
+          )}
+        </label>
         <input
+          id="numberOfPeople"
           type="number"
           placeholder="0"
           value={userInput.numberOfPeople}
           onChange={(e) => handleChange(e, "numberOfPeople")}
+          style={
+            userInput.numberOfPeople === 0
+              ? {
+                  outline: "1px solid #DFA496",
+                }
+              : undefined
+          }
         />
       </div>
     </div>
   );
 }
 
-function Result({ tip }: { tip: Tips }) {
+function Result({
+  tip,
+  setTip,
+  setUserInput,
+}: {
+  tip: Tips;
+  setTip: Dispatch<SetStateAction<Tips>>;
+  setUserInput: Dispatch<SetStateAction<UserInput>>;
+}) {
   const { tipAmount, total } = tip;
   return (
     <div className="result">
@@ -132,9 +177,24 @@ function Result({ tip }: { tip: Tips }) {
       <div>
         <h3>Total</h3>
         <p>/ person</p>
-        <h2>${total.toFixed(2)}</h2>
       </div>
-      <button className="reset-btn">RESET</button>
+      <h2>${total.toFixed(2)}</h2>
+      <button
+        className="reset-btn"
+        onClick={() => {
+          setTip({
+            tipAmount: 0,
+            total: 0,
+            tipPercent: 0,
+          });
+          setUserInput({
+            billTotal: 0,
+            numberOfPeople: 0,
+          });
+        }}
+      >
+        RESET
+      </button>
     </div>
   );
 }
@@ -144,10 +204,19 @@ export default function Card() {
     tipAmount: 0,
     total: 0,
   });
+  const [userInput, setUserInput] = useState<UserInput>({
+    billTotal: 0,
+    numberOfPeople: 1,
+  });
   return (
     <div className="card">
-      <Input setTip={setTip} tip={tip} />
-      <Result tip={tip} />
+      <Input
+        setTip={setTip}
+        tip={tip}
+        userInput={userInput}
+        setUserInput={setUserInput}
+      />
+      <Result tip={tip} setTip={setTip} setUserInput={setUserInput} />
     </div>
   );
 }
