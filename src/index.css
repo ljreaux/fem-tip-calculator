@@ -20,8 +20,174 @@ body {
 }
 
 main {
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
   background-color: var(--clr-light-grayish-cyan);
+}
+
+input {
+  color: var(--clr-very-dark-cyan);
+}
+
+input,
+button {
+  cursor: pointer;
+}
+
+.header {
+  margin-bottom: 3rem;
+}
+
+h1 {
+  color: var(--clr-dark-grayish-cyan);
+  font-size: 1rem;
+  letter-spacing: 0.5em;
+  margin: 0;
+}
+
+.card {
+  background-color: var(--clr-white);
+  padding: 1rem;
+  width: 40%;
+  border-radius: 1rem;
+  display: grid;
+  place-items: center;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.input label {
+  color: var(--clr-grayish-cyan);
+}
+.input label[for="billTotal"]::after {
+  background-image: url(./assets/icon-dollar.svg);
+}
+
+.input label[for="numberOfPeople"]::after {
+  background-image: url(./assets/icon-person.svg);
+}
+
+.input label[for="billTotal"]::after,
+.input label[for="numberOfPeople"]::after {
+  position: absolute;
+  content: "";
+  background-repeat: no-repeat;
+  background-size: 0.5rem;
+  background-position: 50%, 50%;
+  display: grid;
+  place-items: center;
+  height: 1.75rem;
+  width: 1.75rem;
+  z-index: 10;
+}
+
+#tipPercent {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+#tipPercent * {
+  width: 100%;
+}
+
+.btn {
+  border: none;
+  border-radius: 0.25rem;
+  font: inherit;
+  color: var(--clr-very-light-grayish-cyan);
+  background-color: var(--clr-very-dark-cyan);
+  padding: 0.25rem 0.25rem;
+}
+
+input[placeholder="Custom"] {
+  text-align: right;
+  box-sizing: border-box;
+  background-color: var(--clr-very-light-grayish-cyan);
+  border: none;
+  border-radius: 0.25rem;
+  font: inherit;
+  padding: 0.25rem 0.25rem;
+  outline-color: var(--clr-strong-cyan);
+}
+
+.btn:focus {
+  background-color: var(--clr-strong-cyan);
+  color: var(--clr-very-dark-cyan);
+}
+
+.btn:hover {
+  background-color: var(--clr-light-grayish-cyan);
+  color: var(--clr-very-dark-cyan);
+}
+
+#billTotal,
+#numberOfPeople {
+  box-sizing: border-box;
+  position: relative;
+  text-align: end;
+  width: 100%;
+  height: 1.75rem;
+  border: none;
+  font: inherit;
+  background-color: var(--clr-very-light-grayish-cyan);
+  border-radius: 0.25rem;
+  z-index: 9;
+}
+
+#billTotal:focus,
+#numberOfPeople:focus {
+  outline: 1px solid var(--clr-strong-cyan);
+}
+
+.result {
+  background-color: var(--clr-very-dark-cyan);
+  width: 80%;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 1rem;
+}
+
+.result div {
+  color: var(--clr-very-light-grayish-cyan);
+  font-size: 0.75rem;
+}
+
+.result div h3,
+.result div p {
+  margin: 0;
+}
+
+.result h2 {
+  color: var(--clr-strong-cyan);
+}
+
+.reset-btn {
+  grid-column: 1/-1;
+  border: none;
+  color: var(--clr-very-dark-cyan);
+  background-color: var(--clr-strong-cyan);
+  padding-block: 0.25rem;
+  border-radius: 0.25rem;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.reset-btn:hover {
+  background-color: var(--clr-light-grayish-cyan);
+}
+
+@media screen and (max-width: 500px) {
+  .card {
+    width: 90%;
+    grid-template-columns: 1fr;
+  }
+  #tipPercent {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
 }
