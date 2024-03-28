@@ -45,9 +45,8 @@ function TipButtons({
       {tipButtons}
       <label htmlFor="customTip">
         <input
-          type="number"
           placeholder="Custom"
-          value={tipPercent}
+          value={tipPercent != 0 ? tipPercent : ""}
           onChange={handleChange}
         />
       </label>
@@ -140,7 +139,6 @@ function Input({
         </label>
         <input
           id="numberOfPeople"
-          type="number"
           placeholder="0"
           value={userInput.numberOfPeople}
           onChange={(e) => handleChange(e, "numberOfPeople")}

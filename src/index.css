@@ -180,3 +180,14 @@ input[placeholder="Custom"] {
 .reset-btn:hover {
   background-color: var(--clr-light-grayish-cyan);
 }
+
+@media screen and (max-width: 500px) {
+  .card {
+    width: 90%;
+    grid-template-columns: 1fr;
+  }
+  #tipPercent {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
