@@ -51,7 +51,7 @@ h1 {
 .card {
   background-color: var(--clr-white);
   padding: 1rem;
-  width: 40%;
+  width: 60%;
   border-radius: 1rem;
   display: grid;
   place-items: center;
@@ -59,8 +59,14 @@ h1 {
   gap: 1rem;
 }
 
+.input {
+  display: grid;
+  gap: 1rem;
+}
+
 .input label {
   color: var(--clr-grayish-cyan);
+  font-size: 0.5em;
 }
 .input label[for="billTotal"]::after {
   background-image: url(./assets/icon-dollar.svg);
@@ -98,6 +104,7 @@ h1 {
   border: none;
   border-radius: 0.25rem;
   font: inherit;
+  font-size: 0.75em;
   color: var(--clr-very-light-grayish-cyan);
   background-color: var(--clr-very-dark-cyan);
   padding: 0.25rem 0.25rem;
@@ -111,7 +118,10 @@ input[placeholder="Custom"] {
   border-radius: 0.25rem;
   font: inherit;
   padding: 0.25rem 0.25rem;
+  height: 100%;
   outline-color: var(--clr-strong-cyan);
+  text-align: center;
+  font-size: 1.5em;
 }
 
 .btn:focus {
@@ -150,16 +160,21 @@ input[placeholder="Custom"] {
   display: grid;
   grid-template-columns: 1fr 1fr;
   border-radius: 1rem;
+  align-items: center;
 }
 
 .result div {
   color: var(--clr-very-light-grayish-cyan);
-  font-size: 0.75rem;
+  font-size: 0.5rem;
 }
 
 .result div h3,
 .result div p {
   margin: 0;
+}
+
+.result p {
+  color: var(--clr-grayish-cyan);
 }
 
 .result h2 {
@@ -179,6 +194,10 @@ input[placeholder="Custom"] {
 
 .reset-btn:hover {
   background-color: var(--clr-light-grayish-cyan);
+}
+
+.reset-btn:disabled {
+  background-color: rgb(41, 104, 109);
 }
 
 @media screen and (max-width: 500px) {

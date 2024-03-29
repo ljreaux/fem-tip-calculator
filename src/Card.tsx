@@ -6,7 +6,7 @@ interface Tips {
 }
 interface UserInput {
   billTotal: number;
-  numberOfPeople: number;
+  numberOfPeople: number | null;
 }
 
 function TipButtons({
@@ -69,7 +69,7 @@ function Input({
     const { billTotal, numberOfPeople } = userInput;
     let tipAmount = (billTotal * (tip.tipPercent || 0)) / 100;
     let total = billTotal + tipAmount;
-    if (numberOfPeople > 0) {
+    if (numberOfPeople && numberOfPeople > 0) {
       tipAmount /= numberOfPeople;
       total /= numberOfPeople;
     }
@@ -82,7 +82,7 @@ function Input({
 
   function handleChange(
     e: React.FormEvent<HTMLInputElement>,
-    inputType: string,
+    inputType: string
   ) {
     const target = e.target as HTMLInputElement;
     const { value } = target;
@@ -95,18 +95,21 @@ function Input({
   }
   return (
     <div className="input">
-      <label htmlFor="billTotal">Bill</label>
-      <input
-        type="text"
-        id="billTotal"
-        placeholder="0"
-        value={userInput.billTotal}
-        onChange={(e) => handleChange(e, "billTotal")}
-      />
-
-      <label htmlFor="tipPercent"> {"SelectTip %"}</label>
-      <div id="tipPercent">
-        <TipButtons tipPercent={tipPercent} setTipPercent={setTipPercent} />
+      <div className="bill-total">
+        <label htmlFor="billTotal">Bill</label>
+        <input
+          type="text"
+          id="billTotal"
+          placeholder="0"
+          value={userInput.billTotal != 0 ? userInput.billTotal : ""}
+          onChange={(e) => handleChange(e, "billTotal")}
+        />
+      </div>
+      <div>
+        <label htmlFor="tipPercent"> {"SelectTip %"}</label>
+        <div id="tipPercent">
+          <TipButtons tipPercent={tipPercent} setTipPercent={setTipPercent} />
+        </div>
       </div>
       <div
         style={{
@@ -140,7 +143,7 @@ function Input({
         <input
           id="numberOfPeople"
           placeholder="0"
-          value={userInput.numberOfPeople}
+          value={userInput.numberOfPeople ? userInput.numberOfPeople : ""}
           onChange={(e) => handleChange(e, "numberOfPeople")}
           style={
             userInput.numberOfPeople === 0
@@ -190,6 +193,7 @@ function Result({
             numberOfPeople: 0,
           });
         }}
+        disabled={tip.tipAmount > 0 ? false : true}
       >
         RESET
       </button>
@@ -204,7 +208,7 @@ export default function Card() {
   });
   const [userInput, setUserInput] = useState<UserInput>({
     billTotal: 0,
-    numberOfPeople: 1,
+    numberOfPeople: null,
   });
   return (
     <div className="card">
