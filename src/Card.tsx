@@ -171,15 +171,19 @@ function Result({
   return (
     <div className="result">
       <div>
-        <h3>Tip Amount</h3>
-        <p>/ person</p>
+        <div className="tips">
+          <h3>Tip Amount</h3>
+          <p>/ person</p>
+        </div>
+        <h2>${tipAmount.toFixed(2)}</h2>
       </div>
-      <h2>${tipAmount.toFixed(2)}</h2>
       <div>
-        <h3>Total</h3>
-        <p>/ person</p>
+        <div className="totals">
+          <h3>Total</h3>
+          <p>/ person</p>
+        </div>
+        <h2>${total.toFixed(2)}</h2>
       </div>
-      <h2>${total.toFixed(2)}</h2>
       <button
         className="reset-btn"
         onClick={() => {
